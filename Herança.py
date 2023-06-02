@@ -1,3 +1,6 @@
+#A herança é um tipo de relacionamento entre classes que significa que uma classe é outra. 
+#É uma propriedade dos objetos que permite a criação de uma hierarquia entre eles, onde os descendentes herdem dos seus ancestrais suas estruturas de dados e seu código.
+
 class ContaBancaria:
     def __init__(self, saldo):
         self.saldo = saldo
