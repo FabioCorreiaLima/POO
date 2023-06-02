@@ -1,62 +1,44 @@
-# A herança permite a criação de hierarquias de classes, facilitando a reutilização de código 
-# e a organização lógica do programa.
+class ContaBancaria:
+    def __init__(self, saldo):
+        self.saldo = saldo
 
+    def depositar(self, valor):
+        self.saldo += valor
 
-# Aqui, definimos a classe base chamada "Veiculo". Ela possui um construtor __init__ que recebe 
-# os parâmetros e os atribui aos atributos da classe. Também possui os métodos ligar() e 
-# desligar() que imprimem mensagens indicando o estado do veículo.
-class Veiculo:
-    def __init__(self, marca, modelo):
-        self.marca = marca
-        self.modelo = modelo
+    def sacar(self, valor):
+        if valor <= self.saldo:
+            self.saldo -= valor
+        else:
+            print("Saldo insuficiente!")
 
-    def ligar(self):
-        print("O veículo está ligado.")
+class ContaCorrente(ContaBancaria):
+    def __init__(self, saldo):
+        super().__init__(saldo)
+        self.limite_cheque_especial = 1000
 
-    def desligar(self):
-        print("O veículo está desligado.")
+    def sacar(self, valor):
+        if valor <= self.saldo + self.limite_cheque_especial:
+            self.saldo -= valor
+        else:
+            print("Saldo insuficiente!")
 
-# Definimos a classe derivada "Carro" que herda da classe base "Veiculo". Ela também possui um 
-# construtor __init__, que utiliza a função super() para chamar o construtor da classe base e 
-# atribuir os valores. Além disso, a classe "Carro" adiciona um novo atributo. Ela possui o 
-# método dirigir(), que imprime uma mensagem indicando o movimento do carro.
-class Carro(Veiculo):
-    def __init__(self, marca, modelo, cor):
-        super().__init__(marca, modelo)
-        self.cor = cor
+class ContaPoupanca(ContaBancaria):
+    def __init__(self, saldo):
+        super().__init__(saldo)
+        self.taxa_rendimento = 0.05
 
-    def dirigir(self):
-        print(f"O carro {self.marca} {self.modelo} de cor {self.cor} está em movimento.")
+    def calcular_rendimento(self):
+        rendimento = self.saldo * self.taxa_rendimento
+        self.depositar(rendimento)
 
-# Definimos a classe derivada "Moto" que inicialmente faz o mesmo que a classe derivada "Carro".
-# A classe "Moto" também adiciona um novo atributo. Ela possui o método acelerar(), que imprime 
-# uma mensagem indicando a aceleração da moto.
-class Moto(Veiculo):
-    def __init__(self, marca, modelo, cilindrada):
-        super().__init__(marca, modelo)
-        self.cilindrada = cilindrada
+# Criando instâncias das classes
+conta_corrente = ContaCorrente(1000)
+conta_poupanca = ContaPoupanca(2000)
 
-    def acelerar(self):
-        print(f"A moto {self.marca} {self.modelo} com {self.cilindrada}cc está acelerando.")
+# Realizando operações nas contas
+conta_corrente.sacar(500)  # Saque na conta corrente
+conta_poupanca.depositar(1000)  # Depósito na conta poupança
+conta_poupanca.calcular_rendimento()  # Cálculo de rendimento na conta poupança
 
-
-# Nesta parte do código, criamos instâncias das classes derivadas "Carro" e "Moto" usando o 
-# construtor de cada classe, passando os argumentos apropriados.
-carro = Carro("Ford", "Mustang", "vermelho")
-moto = Moto("Honda", "CBR 1000RR", 1000)
-
-# Em seguida, chamamos os métodos específicos de cada classe, como carro.dirigir() e 
-# moto.acelerar(), além de chamar os métodos herdados da classe base, como carro.ligar() e 
-# moto.desligar().
-carro.ligar()
-carro.dirigir()
-carro.desligar()
-
-moto.ligar()
-moto.acelerar()
-moto.desligar()
-
-# Esse exemplo ilustra como a herança permite que as classes derivadas herdem atributos e 
-# métodos da classe base, além de adicionar comportamentos específicos ou substituir os 
-# comportamentos herdados. Isso promove a reutilização de código e a organização lógica do 
-# programa.
+print(conta_corrente.saldo)  # Saída: 500
+print(conta_poupanca.saldo)  # Saída: 3100
